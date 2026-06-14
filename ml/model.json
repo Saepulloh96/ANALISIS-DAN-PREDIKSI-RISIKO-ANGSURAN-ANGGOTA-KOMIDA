@@ -1,0 +1,316 @@
+{
+    "accuracy": 0.9021077283372365,
+    "classes": [
+        "Diragukan",
+        "Lancar",
+        "Macet"
+    ],
+    "confusion_matrix": [
+        [
+            797,
+            1,
+            29
+        ],
+        [
+            0,
+            25,
+            157
+        ],
+        [
+            6,
+            16,
+            1104
+        ]
+    ],
+    "classification_report": {
+        "Diragukan": {
+            "precision": 0.5952380952380952,
+            "recall": 0.13736263736263737,
+            "f1-score": 0.22321428571428573,
+            "support": 182
+        },
+        "Lancar": {
+            "precision": 0.9925280199252802,
+            "recall": 0.9637243047158404,
+            "f1-score": 0.9779141104294478,
+            "support": 827
+        },
+        "Macet": {
+            "precision": 0.8558139534883721,
+            "recall": 0.9804618117229129,
+            "f1-score": 0.9139072847682118,
+            "support": 1126
+        }
+    },
+    "feature_importances": {
+        "jumlah_pinjaman": 0.043478260869565216,
+        "tenor": 0.043478260869565216,
+        "cicilan": 0.043478260869565216,
+        "simp_wajib": 0.34782608695652173,
+        "simp_sukarela": 0.17391304347826086,
+        "simp_pensiun": 0.08695652173913043,
+        "simp_hari_raya": 0.13043478260869565,
+        "total_simpanan": 0.08695652173913043,
+        "rasio_simpanan": 0.043478260869565216,
+        "tujuan_pinjaman": 0
+    },
+    "tree": {
+        "type": "split",
+        "feature": "simp_hari_raya",
+        "threshold": 30997,
+        "left": {
+            "type": "split",
+            "feature": "simp_hari_raya",
+            "threshold": 17989.5,
+            "left": {
+                "type": "split",
+                "feature": "tenor",
+                "threshold": 63.5,
+                "left": {
+                    "type": "split",
+                    "feature": "simp_wajib",
+                    "threshold": 516500,
+                    "left": {
+                        "type": "split",
+                        "feature": "simp_wajib",
+                        "threshold": 112000,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.8880866425992779,
+                            "samples": 277
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.695906432748538,
+                            "samples": 342
+                        }
+                    },
+                    "right": {
+                        "type": "split",
+                        "feature": "simp_sukarela",
+                        "threshold": 34400.5,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.98989898989899,
+                            "samples": 99
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.8785046728971962,
+                            "samples": 107
+                        }
+                    }
+                },
+                "right": {
+                    "type": "split",
+                    "feature": "simp_pensiun",
+                    "threshold": 288420.5,
+                    "left": {
+                        "type": "split",
+                        "feature": "cicilan",
+                        "threshold": 27780,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.8421052631578947,
+                            "samples": 19
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.9767441860465116,
+                            "samples": 301
+                        }
+                    },
+                    "right": {
+                        "type": "leaf",
+                        "class": "Macet",
+                        "probability": 0.6,
+                        "samples": 10
+                    }
+                }
+            },
+            "right": {
+                "type": "split",
+                "feature": "simp_sukarela",
+                "threshold": 48218.5,
+                "left": {
+                    "type": "split",
+                    "feature": "simp_wajib",
+                    "threshold": 113000,
+                    "left": {
+                        "type": "leaf",
+                        "class": "Macet",
+                        "probability": 1,
+                        "samples": 13
+                    },
+                    "right": {
+                        "type": "split",
+                        "feature": "total_simpanan",
+                        "threshold": 417689.5,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Diragukan",
+                            "probability": 0.5,
+                            "samples": 10
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.9375,
+                            "samples": 16
+                        }
+                    }
+                },
+                "right": {
+                    "type": "split",
+                    "feature": "jumlah_pinjaman",
+                    "threshold": 3450000,
+                    "left": {
+                        "type": "split",
+                        "feature": "simp_wajib",
+                        "threshold": 309000,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Lancar",
+                            "probability": 0.8,
+                            "samples": 10
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Lancar",
+                            "probability": 1,
+                            "samples": 20
+                        }
+                    },
+                    "right": {
+                        "type": "leaf",
+                        "class": "Macet",
+                        "probability": 0.7272727272727273,
+                        "samples": 11
+                    }
+                }
+            }
+        },
+        "right": {
+            "type": "split",
+            "feature": "simp_sukarela",
+            "threshold": 81258,
+            "left": {
+                "type": "split",
+                "feature": "rasio_simpanan",
+                "threshold": 0.0655,
+                "left": {
+                    "type": "split",
+                    "feature": "simp_wajib",
+                    "threshold": 56500,
+                    "left": {
+                        "type": "leaf",
+                        "class": "Macet",
+                        "probability": 1,
+                        "samples": 18
+                    },
+                    "right": {
+                        "type": "leaf",
+                        "class": "Macet",
+                        "probability": 0.9,
+                        "samples": 10
+                    }
+                },
+                "right": {
+                    "type": "split",
+                    "feature": "simp_pensiun",
+                    "threshold": 76907,
+                    "left": {
+                        "type": "split",
+                        "feature": "simp_wajib",
+                        "threshold": 117500,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.6923076923076923,
+                            "samples": 13
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Diragukan",
+                            "probability": 0.625,
+                            "samples": 32
+                        }
+                    },
+                    "right": {
+                        "type": "split",
+                        "feature": "simp_wajib",
+                        "threshold": 1320500,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.8421052631578947,
+                            "samples": 19
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 1,
+                            "samples": 13
+                        }
+                    }
+                }
+            },
+            "right": {
+                "type": "split",
+                "feature": "simp_wajib",
+                "threshold": 402500,
+                "left": {
+                    "type": "leaf",
+                    "class": "Macet",
+                    "probability": 0.5454545454545454,
+                    "samples": 11
+                },
+                "right": {
+                    "type": "split",
+                    "feature": "simp_hari_raya",
+                    "threshold": 45611,
+                    "left": {
+                        "type": "split",
+                        "feature": "total_simpanan",
+                        "threshold": 904000,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Lancar",
+                            "probability": 1,
+                            "samples": 69
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Macet",
+                            "probability": 0.45454545454545453,
+                            "samples": 11
+                        }
+                    },
+                    "right": {
+                        "type": "split",
+                        "feature": "simp_sukarela",
+                        "threshold": 799500,
+                        "left": {
+                            "type": "leaf",
+                            "class": "Lancar",
+                            "probability": 0.9971181556195965,
+                            "samples": 694
+                        },
+                        "right": {
+                            "type": "leaf",
+                            "class": "Lancar",
+                            "probability": 0.8,
+                            "samples": 10
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
