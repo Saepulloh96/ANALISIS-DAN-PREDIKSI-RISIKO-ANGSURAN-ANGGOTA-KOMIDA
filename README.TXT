@@ -133,6 +133,7 @@ Aplikasi ini menggunakan sistem login dengan 3 tingkat akses:
 ------------------------------------------------------------------------
   TENTANG MODEL MACHINE LEARNING-NYA
 ------------------------------------------------------------------------
+<<<<<<< HEAD
 
 Model yang digunakan adalah CART Decision Tree Classifier — salah satu
 algoritma ML yang cukup populer karena hasilnya mudah dijelaskan ke orang
@@ -147,3 +148,10 @@ Tingginya akurasi ini menunjukkan bahwa pola pembayaran angsuran anggota
 KOMIDA bisa diprediksi cukup baik hanya dari data simpanan dan pinjaman
 yang sudah ada.
 
+=======
+- Algoritma: CART Decision Tree Classifier
+- Akurasi Model: 90.21%
+- Variabel Utama: Simpanan Wajib, Simpanan Sukarela, Simpanan Hari Raya, Tenor, 
+  Jumlah Pinjaman, dan Rasio Simpanan terhadap Pinjaman.
+========================================================================
+>>>>>>> 8708d58f6d3d0752bde44db6c615abe4f11d36aa
