@@ -7,7 +7,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'db_komida_risk');
 
 /**
- * Connects to database and automatically initializes it if it does not exist
+ * Connects to database and automatically initializes it if it does not exist.
+ * Also ensures the users table exists with default accounts on every startup.
  */
 function getDB() {
     $dsn = "mysql:host=" . DB_HOST . ";charset=utf8mb4";
@@ -36,7 +37,16 @@ function getDB() {
             $sqlFile = __DIR__ . '/database.sql';
             if (file_exists($sqlFile)) {
                 $sql = file_get_contents($sqlFile);
-                $pdo->exec($sql);
+                // Execute statement by statement (ignore USE/CREATE DATABASE lines)
+                $statements = array_filter(
+                    array_map('trim', explode(';', $sql)),
+                    fn($s) => !empty($s) && !preg_match('/^\s*(CREATE DATABASE|USE)\b/i', $s)
+                );
+                foreach ($statements as $statement) {
+                    if (!empty(trim($statement))) {
+                        $pdo->exec($statement);
+                    }
+                }
             }
             
             // Automatically import dataset from CSV to bootstrap database
@@ -74,6 +84,44 @@ function getDB() {
         } else {
             // Just select the database
             $pdo = new PDO($dsn . ";dbname=" . DB_NAME, DB_USER, DB_PASS, $options);
+        }
+
+        // ----------------------------------------------------------------
+        // Self-Healing: Ensure users table exists (runs on every request)
+        // ----------------------------------------------------------------
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nama VARCHAR(100) NOT NULL,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                role ENUM('administrator','manager','staff') NOT NULL DEFAULT 'staff',
+                is_active TINYINT(1) NOT NULL DEFAULT 1,
+                last_login DATETIME NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+
+        // Seed default users if table is empty
+        $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+        if ($userCount == 0) {
+            $defaults = [
+                ['nama' => 'Super Administrator', 'username' => 'admin',   'password' => 'Admin2026',   'role' => 'administrator'],
+                ['nama' => 'Kepala Manajer',      'username' => 'manager', 'password' => 'Manager2026', 'role' => 'manager'],
+                ['nama' => 'Petugas Lapangan',    'username' => 'staff',   'password' => 'Staff2026',   'role' => 'staff'],
+            ];
+            $stmtUser = $pdo->prepare(
+                "INSERT IGNORE INTO users (nama, username, password, role) VALUES (:nama, :username, :password, :role)"
+            );
+            foreach ($defaults as $u) {
+                $stmtUser->execute([
+                    ':nama'     => $u['nama'],
+                    ':username' => $u['username'],
+                    ':password' => password_hash($u['password'], PASSWORD_BCRYPT, ['cost' => 12]),
+                    ':role'     => $u['role'],
+                ]);
+            }
         }
         
         return $pdo;

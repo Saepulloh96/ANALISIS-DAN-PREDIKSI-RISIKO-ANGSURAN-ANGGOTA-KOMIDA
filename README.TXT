@@ -1,64 +1,149 @@
 ========================================================================
-APLIKASI ANALISIS DAN PREDIKSI RISIKO ANGSURAN ANGGOTA KOPERASI MITRA DHUAFA
+  ANALISIS & PREDIKSI RISIKO ANGSURAN ANGGOTA KOPERASI MITRA DHUAFA
 ========================================================================
 
-Aplikasi ini dikembangkan untuk kebutuhan Capstone Project (Tugas Akhir Semester 8)
-yang menggabungkan model Machine Learning (CART Decision Tree) dan aplikasi web 
-interaktif untuk menganalisis kelayakan angsuran anggota Koperasi Mitra Dhuafa.
+Proyek ini bertujuan untuk membantu Koperasi Mitra Dhuafa (KOMIDA) memahami siapa saja anggota yang
+berisiko mengalami kesulitan membayar angsuran — sebelum masalah itu benar-
+benar terjadi.
+
+Caranya? Dengan menggabungkan kecerdasan buatan (Machine Learning menggunakan
+algoritma CART Decision Tree) dan sebuah aplikasi web yang mudah digunakan.
+Hasilnya bukan cuma angka prediksi, tapi juga penjelasan mengapa sistem
+mengambil keputusan tersebut — yang sering disebut Explainable AI (XAI).
+
+Aplikasi ini juga dilengkapi sistem login dengan Role-Based Access Control
+(RBAC), sehingga setiap pengguna hanya bisa mengakses fitur yang sesuai
+dengan peran/jabatannya masing-masing.
+
+
+Berikut gambaran singkat isi proyek ini:
+
+  /
+  ├── data/
+  │   └── dataset_komida.csv       → Dataset untuk melatih model. Berisi
+  │                                   gabungan data real + data yang sudah
+  │                                   diseimbangkan agar model lebih adil.
+  │
+  ├── ml/
+  │   ├── train.py                 → Script Python untuk melatih model ML.
+  │   │                               Jalankan ini jika ingin melatih ulang.
+  │   ├── requirements.txt         → Daftar library Python yang diperlukan
+  │   │                               (pandas, scikit-learn, dll).
+  │   └── model.json               → Hasil model yang sudah dilatih,
+  │                                   disimpan dalam format JSON agar bisa
+  │                                   dibaca oleh aplikasi PHP.
+  │
+  ├── web/
+  │   ├── assets/                  → File CSS dan JavaScript tampilan web
+  │   ├── includes/                → Komponen reusable: header, footer,
+  │   │                               auth helper (RBAC), dan logika
+  │   │                               DecisionTree di PHP
+  │   ├── config.php               → Koneksi ke database + setup otomatis
+  │   │                               (termasuk buat tabel users & seeding)
+  │   ├── database.sql             → Skema tabel database MySQL
+  │   ├── login.php                → Halaman login sistem (RBAC)
+  │   ├── logout.php               → Hancurkan sesi & kembali ke login
+  │   ├── index.php                → Dashboard utama: statistik & grafik
+  │   ├── predict.php              → Halaman prediksi + penjelasan AI-nya
+  │   ├── members.php              → Kelola data anggota (akses per role)
+  │   ├── model_analysis.php       → Laporan akurasi & aturan pohon keputusan
+  │   │                               (hanya Administrator & Manager)
+  │   └── admin_users.php          → Manajemen akun pengguna
+  │                                   (hanya Administrator)
+  │
+  └── DATA_ANGSURAN.xlsx           → File Excel sumber data asli dari KOMIDA
+
 
 ------------------------------------------------------------------------
-STRUKTUR DIREKTORI PROYEK
+  SEBELUM MULAI — PASTIKAN INI SUDAH TERPASANG
 ------------------------------------------------------------------------
-/
-├── data/
-│   └── dataset_komida.csv       - Dataset latih (gabungan data real & seimbang)
-├── ml/
-│   ├── train.py                 - Script Python scikit-learn untuk training model
-│   ├── requirements.txt         - Library Python yang dibutuhkan (pandas, sklearn)
-│   └── model.json               - Model yang sudah dilatih (hasil ekspor format JSON)
-├── web/
-│   ├── assets/                  - File CSS premium dan JavaScript
-│   ├── includes/                - File header, footer, & logika DecisionTree.php
-│   ├── config.php               - Koneksi database & auto-import bootstrap data
-│   ├── database.sql             - Skema database MySQL
-│   ├── index.php                - Dashboard utama (Statistik & Visualisasi Grafik)
-│   ├── predict.php              - Kalkulator Prediksi & Explainable AI (XAI)
-│   ├── members.php              - Kelola & cari database data anggota
-│   └── model_analysis.php       - Laporan metrik akurasi & aturan logika pohon
-└── DATA_ANGSURAN.xlsx           - Sumber data delinquency real awal dari Koperasi
+
+Cukup dua hal yang dibutuhkan:
+
+  1. XAMPP — pastikan Apache dan MySQL-nya sudah aktif.
+  2. PHP versi 8.1 ke atas (proyek ini diuji di PHP 8.2).
+
+Itu saja, tidak perlu install apapun yang rumit.
+
 
 ------------------------------------------------------------------------
-PERSYARATAN SISTEM
+  CARA MENJALANKAN APLIKASINYA
 ------------------------------------------------------------------------
-1. XAMPP (Apache & MySQL aktif)
-2. PHP versi 8.1 ke atas (aplikasi diuji pada PHP 8.2)
+
+Kabar baiknya: kamu TIDAK perlu mengimpor database secara manual. Sistem
+ini punya fitur "Self-Healing Auto Setup" yang akan mengurus semuanya
+sendiri saat pertama kali diakses. Tinggal ikuti 3 langkah ini:
+
+  Langkah 1 — Aktifkan XAMPP
+  ───────────────────────────
+  Buka XAMPP Control Panel, lalu klik "Start" untuk Apache dan MySQL.
+  Pastikan keduanya berwarna hijau (berjalan).
+
+  Langkah 2 — Jalankan Server PHP
+  ─────────────────────────────────
+  Buka PowerShell, lalu copy-paste perintah di bawah ini dan tekan Enter:
+
+    C:\xampp\php\php.exe -S localhost:8080 -t "C:\xampp\htdocs\ANALISIS_DAN_PREDIKSI_ANGSURAN_ANGGOTA_KOPERASI_MITRA_DHUAFA\web"
+
+  Sesuaikan path-nya jika kamu menyimpan folder ini di lokasi yang berbeda.
+
+  Langkah 3 — Buka di Browser
+  ─────────────────────────────
+  Buka browser favoritmu (Chrome, Edge, Firefox), lalu kunjungi:
+
+    http://localhost:8080
+  Selesai!
+
+  ⚠ Catatan penting untuk akses pertama kali:
+  Saat halaman pertama kali terbuka, sistem akan otomatis:
+    • Mendeteksi apakah database sudah ada atau belum
+    • Membuat database baru bernama 'db_komida_risk'
+    • Mengimpor semua tabel yang dibutuhkan (termasuk tabel users)
+    • Memuat 2.135 data anggota dari file CSV ke database
+    • Membuat 3 akun default untuk login (lihat bagian di bawah)
+
+  Proses ini hanya terjadi sekali. Selanjutnya aplikasi langsung jalan normal.
+
 
 ------------------------------------------------------------------------
-CARA MENJALANKAN APLIKASI WEB
+  SISTEM LOGIN & HAK AKSES (RBAC)
 ------------------------------------------------------------------------
-Sistem ini menggunakan fitur "Self-Healing Auto Setup Database". Anda tidak perlu
-mengimpor database manual ke phpMyAdmin. Sistem akan melakukannya otomatis!
 
-Langkah 1:
-Buka XAMPP Control Panel, lalu klik tombol "Start" pada Apache dan MySQL.
+Aplikasi ini menggunakan sistem login dengan 3 tingkat akses:
 
-Langkah 2:
-Buka Terminal PowerShell Anda dan jalankan perintah berikut untuk menjalankan server:
+  ┌─────────────────┬──────────────────────────────────────────────────┐
+  │ Role            │ Yang Bisa Diakses                                │
+  ├─────────────────┼──────────────────────────────────────────────────┤
+  │ Administrator   │ Semua fitur + Kelola akun pengguna               │
+  │ Manager         │ Dashboard, Prediksi, Data Anggota, Analisis ML   │
+  │ Staff           │ Dashboard & Prediksi Risiko saja (read-only)     │
+  └─────────────────┴──────────────────────────────────────────────────┘
 
-C:\xampp\php\php.exe -S localhost:8000 -t "H:/mata_kuliah/SEMESTER 8/7.CAPSTONE PROJECT/ANALISIS_DAN_PREDIKSI_ANGSURAN_ANGGOTA_KOPERASI_MITRA_DHUAFA/web"
+  Akun default yang sudah disiapkan otomatis:
 
-Langkah 3:
-Buka browser (Google Chrome, Microsoft Edge, dll) dan kunjungi URL berikut:
-http://localhost:8000
+    Username : admin       | Password : Admin2026    | Role: Administrator
+    Username : manager     | Password : Manager2026  | Role: Manager
+    Username : staff       | Password : Staff2026    | Role: Staff
 
-*Catatan: Pada akses halaman pertama, sistem akan otomatis mendeteksi database, 
-membuat database baru bernama 'db_komida_risk', mengimpor tabel SQL, dan memuat 
-2.135 data anggota latih dari file CSV secara otomatis!
+  Catatan: Password disimpan terenkripsi (bcrypt) di database.
+           Akun ini bisa diubah atau dihapus kapan saja melalui
+           halaman "Kelola Pengguna" (hanya bisa diakses oleh Administrator).
+
 
 ------------------------------------------------------------------------
-METODE MACHINE LEARNING & EVALUASI
+  TENTANG MODEL MACHINE LEARNING-NYA
 ------------------------------------------------------------------------
-- Algoritma: CART Decision Tree Classifier
-- Akurasi Model: 90.21%
-- Variabel Utama: Simpanan Wajib, Simpanan Sukarela, Simpanan Hari Raya, Tenor, 
-  Jumlah Pinjaman, dan Rasio Simpanan terhadap Pinjaman.
+
+Model yang digunakan adalah CART Decision Tree Classifier — salah satu
+algoritma ML yang cukup populer karena hasilnya mudah dijelaskan ke orang
+awam sekalipun (tidak seperti "kotak hitam" pada model AI lainnya).
+
+  • Akurasi model  : 90,21%
+  • Fitur/variabel : Simpanan Wajib, Simpanan Sukarela, Simpanan Hari Raya,
+                     Tenor Pinjaman, Jumlah Pinjaman, dan Rasio Simpanan
+                     terhadap Pinjaman.
+
+Tingginya akurasi ini menunjukkan bahwa pola pembayaran angsuran anggota
+KOMIDA bisa diprediksi cukup baik hanya dari data simpanan dan pinjaman
+yang sudah ada.
+

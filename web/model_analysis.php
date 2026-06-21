@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/header.php';
+requireRole(['administrator', 'manager']);
 require_once 'includes/DecisionTree.php';
 
 $modelData = null;
@@ -132,7 +133,7 @@ function renderTreeHtml($node, $indent = 0) {
 <div class="page-header">
     <div>
         <h1 class="page-title">Analisis Metrik & Logika Model</h1>
-        <p class="page-subtitle">Evaluasi akurasi model C4.5 Decision Tree, tingkat performa klasifikasi, dan representasi visual pohon keputusan.</p>
+        <p class="page-subtitle">Evaluasi akurasi model CART Decision Tree, tingkat performa klasifikasi, dan representasi visual pohon keputusan.</p>
     </div>
 </div>
 

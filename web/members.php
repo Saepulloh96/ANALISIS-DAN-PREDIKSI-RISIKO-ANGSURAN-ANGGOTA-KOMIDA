@@ -1,11 +1,14 @@
 <?php
 require_once 'includes/header.php';
 
+// Staff hanya bisa melihat data, tidak bisa menambah/edit
+$canEdit = hasAnyRole(['administrator', 'manager']);
+
 $message = '';
 $errMessage = '';
 
-// Handle Adding New Member
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_member') {
+// Handle Adding New Member — hanya untuk administrator & manager
+if ($canEdit && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_member') {
     try {
         if (!isset($pdo)) {
             throw new Exception("Koneksi database tidak tersedia.");
@@ -128,6 +131,11 @@ if (isset($pdo)) {
         <h1 class="page-title">Database Anggota Koperasi</h1>
         <p class="page-subtitle">Kelola dan telusuri portofolio data angsuran serta simpanan seluruh anggota KOMIDA.</p>
     </div>
+    <?php if (!$canEdit): ?>
+    <span class="badge" style="background:#fef3c7;color:#d97706;font-size:0.85rem;padding:0.4rem 1rem;">
+        <i class="fa-solid fa-eye"></i> Mode Hanya Baca (Staff)
+    </span>
+    <?php endif; ?>
 </div>
 
 <?php if ($message): ?>
@@ -142,7 +150,7 @@ if (isset($pdo)) {
     </div>
 <?php endif; ?>
 
-<div class="section-grid" style="grid-template-columns: 2fr 1fr; align-items: start;">
+<div class="section-grid" style="grid-template-columns: <?php echo $canEdit ? '2fr 1fr' : '1fr'; ?>; align-items: start;">
     
     <!-- Table list -->
     <div class="card">
@@ -241,7 +249,8 @@ if (isset($pdo)) {
         <?php endif; ?>
     </div>
     
-    <!-- Add new member form side card -->
+    <!-- Add new member form — hanya untuk administrator & manager -->
+    <?php if ($canEdit): ?>
     <div class="card">
         <h2 class="section-title">
             <i class="fa-solid fa-user-plus"></i> Tambah Anggota Baru
@@ -322,6 +331,7 @@ if (isset($pdo)) {
             </button>
         </form>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require_once 'includes/footer.php'; ?>
