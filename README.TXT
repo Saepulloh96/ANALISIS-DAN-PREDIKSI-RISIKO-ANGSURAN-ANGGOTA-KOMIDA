@@ -62,6 +62,3 @@ METODE MACHINE LEARNING & EVALUASI
 - Akurasi Model: 90.21%
 - Variabel Utama: Simpanan Wajib, Simpanan Sukarela, Simpanan Hari Raya, Tenor, 
   Jumlah Pinjaman, dan Rasio Simpanan terhadap Pinjaman.
-
-Selamat mempresentasikan tugas Capstone Project Anda!
-========================================================================
