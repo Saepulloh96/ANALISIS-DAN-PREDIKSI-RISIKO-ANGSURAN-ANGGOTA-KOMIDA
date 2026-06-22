@@ -515,15 +515,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="role-hint-list">
                 <div class="role-hint-item">
                     <span class="rh-role rh-admin">Admin</span>
-                    <span class="rh-cred">admin / Admin@123!</span>
+                    <span class="rh-cred">admin / Admin2026</span>
                 </div>
                 <div class="role-hint-item">
                     <span class="rh-role rh-manager">Manager</span>
-                    <span class="rh-cred">manager / Manager@123!</span>
+                    <span class="rh-cred">manager / Manager2026</span>
                 </div>
                 <div class="role-hint-item">
                     <span class="rh-role rh-staff">Staff</span>
-                    <span class="rh-cred">staff / Staff@123!</span>
+                    <span class="rh-cred">staff / Staff2026</span>
                 </div>
             </div>
         </div>
