@@ -154,3 +154,4 @@ yang sudah ada.
 - Variabel Utama: Simpanan Wajib, Simpanan Sukarela, Simpanan Hari Raya, Tenor, 
   Jumlah Pinjaman, dan Rasio Simpanan terhadap Pinjaman.
 ========================================================================
+
