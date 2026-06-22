@@ -509,7 +509,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         </form>
 
-        <!-- Default credentials hint -->
+        <!-- Default credentials hint 
         <div class="role-hints">
             <div class="role-hints-title">Akun Default Sistem</div>
             <div class="role-hint-list">
@@ -529,7 +529,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </div>
-</div>
+</div>-->
 
 <script>
 // Toggle password visibility
