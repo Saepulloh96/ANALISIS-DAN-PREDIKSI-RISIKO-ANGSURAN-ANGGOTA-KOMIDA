@@ -112,6 +112,12 @@ function isActive($pageName) {
                         <span>Kelola Pengguna</span>
                     </a>
                 </li>
+                <li class="menu-item <?php echo isActive('import_data.php'); ?>">
+                    <a href="import_data.php">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Impor Data CSV</span>
+                    </a>
+                </li>
                 <?php endif; ?>
             </ul>
         </div>
